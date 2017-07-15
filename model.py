@@ -1,7 +1,7 @@
 from field import Field
 
 
-class Model(object):
+class Model:
     @property
     def _fields_dict(self):
 
