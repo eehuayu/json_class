@@ -1,9 +1,9 @@
-from field import Field
+from jsonx.field import Field
 
 
 class Model:
     @property
-    def _fields_dict(self):
+    def fields_dict(self):
 
         fields_dict = dict()
 
@@ -14,16 +14,9 @@ class Model:
 
         return fields_dict
 
-    def json_to_cls(self, json_object):
-
-        json_value = json_object['__value__']
-        for attr in self._fields_dict:
-            if attr in json_value:
-                setattr(self, attr, json_value[attr])
-
     def cls_to_json(self):
         value = dict()
-        for attr in self._fields_dict:
+        for attr in self.fields_dict:
             value[attr] = getattr(self, attr, None)
 
         json_object = dict(
@@ -32,3 +25,4 @@ class Model:
         )
 
         return json_object
+

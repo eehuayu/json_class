@@ -1,46 +1,30 @@
-from example import Example
-from main import class_dict
+from jsonx.field import Field
+from jsonx.jsonx_face import json_dumps, json_loads, register_models
+from jsonx.model import Model
 
 
-def class_to_json():
-    """
-    class转json示例
-    :return:
-    """
-    a = Example()
-    print(a.cls_to_json())
+class Example(Model):
+    a = Field()
+    b = Field()
+    x = Field()
+    v = 0
+
+    def __init__(self):
+        self.a = 3
+        self.b = 4
+        self.x = {"11": 11}
+
+    def sum_ab(self):
+        return self.a + self.b
 
 
-def json_to_class():
-    """
-    json转class示例
-    :return:
-    """
+register_models(Example)
 
-    json_object = dict(
-        __class__='Example',
-        __value__=dict(
-            a=10000000000,
-            b=33,
-            x=dict(r=11),
-        )
-    )
+a = Example()
 
-    # 初始化对象
-    aa = class_dict[json_object['__class__']]()
-    # 加载属性
-    aa.json_to_cls(dict(
-        __class__='A',
-        __value__=dict(
-            a=10000000000,
-            b=33,
-            x=dict(r=11),
-        )
-    ))
+# 类属性转化为json对象
+print(json_dumps(a))
 
-    print(aa.a, aa.b, aa.x, aa.sum_ab())
+class_object = json_loads(json_dumps(a))
 
-
-# 执行下面的代码，成功将class和json互相转化
-class_to_json()
-json_to_class()
+print(class_object.__dict__)
